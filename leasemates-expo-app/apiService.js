@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL of your Django backend
-const API_BASE_URL = "http://127.0.0.1:8000/api/";
+const API_BASE_URL = "http://10.16.29.191:8000/api/";
 
 // Axios instance
 const apiClient = axios.create({
@@ -22,9 +22,23 @@ export const setAuthToken = (token) => {
 
 // Example API callsr
 export const loginUser = async (credentials) => {
-    const response = await apiClient.post("token/", credentials);
-    return response.data;
+    try {
+        // Use the apiClient instance and await the response
+        const response = await apiClient.post("token/", {
+            username: credentials["username"],
+            password: credentials["password"],
+        });
+
+        // Log the full response to debug
+        console.log("Login Response:", response);
+
+        return response.data; // Return the response data (access and refresh tokens)
+    } catch (error) {
+        console.log("Login Error:", error.response?.data || error.message);
+        throw error; // Throw the error for the calling function to handle
+    }
 };
+
 
 export const fetchMessages = async () => {
     const response = await apiClient.get("communication/messages/");
