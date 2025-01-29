@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL of your Django backend
-const API_BASE_URL = "http://10.16.29.191:8000/api/";
+const API_BASE_URL = "http://192.168.5.117:8000/api/";
 
 // Axios instance
 const apiClient = axios.create({
@@ -20,34 +20,44 @@ export const setAuthToken = (token) => {
     }
 };
 
-// Example API callsr
+// Function to log in and store the token
 export const loginUser = async (credentials) => {
     try {
-        // Use the apiClient instance and await the response
         const response = await apiClient.post("token/", {
             username: credentials["username"],
             password: credentials["password"],
         });
 
-        // Log the full response to debug
-        console.log("Login Response:", response);
+        const token = response.data.access;  // Get access token
+        setAuthToken(token);  // Set token for future requests
 
-        return response.data; // Return the response data (access and refresh tokens)
+        return response.data; // Return the tokens (access + refresh)
     } catch (error) {
         console.log("Login Error:", error.response?.data || error.message);
-        throw error; // Throw the error for the calling function to handle
+        throw error;
     }
 };
 
-
+// Function to fetch messages with authentication
 export const fetchMessages = async () => {
-    const response = await apiClient.get("communication/messages/");
-    return response.data;
+    try {
+        const response = await apiClient.get("messages/");
+        return response.data;
+    } catch (error) {
+        console.error("Fetch Messages Error:", error.response?.data || error.message);
+        throw error;
+    }
 };
 
+// Function to send messages with authentication
 export const sendMessage = async (data) => {
-    const response = await apiClient.post("communication/messages/", data);
-    return response.data;
+    try {
+        const response = await apiClient.post("messages/", data);
+        return response.data;
+    } catch (error) {
+        console.error("Send Message Error:", error.response?.data || error.message);
+        throw error;
+    }
 };
 
 export default apiClient;

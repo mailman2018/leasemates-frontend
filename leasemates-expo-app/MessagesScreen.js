@@ -8,6 +8,7 @@ const MessagesScreen = () => {
     const loadMessages = async () => {
         try {
             const data = await fetchMessages();
+            console.log(data);
             setMessages(data); // Update state with fetched messages
         } catch (error) {
             Alert.alert("Failed to fetch messages", error.response?.data?.detail || "Unknown error");

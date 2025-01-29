@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = "http://10.16.29.191:8000/api/token/";
+const API_URL = "http://192.168.5.117:8000/api/token/";
 
 // POST request body
 const credentials = {

@@ -9,12 +9,10 @@ const LoginScreen = ({ navigation }) => {
     const handleLogin = async () => {
         try {
             const data = await loginUser({ username, password });
-            Alert.alert("Login successful!", `Access Token: ${data.access}`);
+            // Alert.alert("Login successful!", `Access Token: ${data.access}`);
             navigation.navigate("Messages");
         } catch (error) {
             Alert.alert("Login failed", error.response?.data?.detail || "Unknown error");
-            console.log(error)
-            console.log("Hi")
         }
     };
 
